@@ -13,7 +13,7 @@ public class MovieActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie);
 
         GridView gridView = (GridView) findViewById(R.id.movie_poster_grid_view);
-        //TODO (1) Set up an adapter to this grid view which will populate the screen with Movies Posters
+        //TODO Set up an adapter to this grid view which will populate the screen with Movies Posters
 
 
     }
