@@ -33,7 +33,7 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
-        if (AP)
+
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.loading_circle);
         mOfflineTextView = (TextView) findViewById(R.id.internet_connection_error_text);
