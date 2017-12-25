@@ -5,13 +5,15 @@ package com.example.android.popularmovies;
  */
 
 public class Movie {
+
+
     private String mMovieTitle;
     private String mPosterPath;
     private String mPlotSynopsis;
-    private String mUserRating;
+    private double mUserRating;
     private String mReleaseDate;
 
-    public Movie(String movieTitle,String posterPath, String plotSynopsis, String userRating,String releaseDate){
+    public Movie(String movieTitle,String posterPath, String plotSynopsis, double userRating,String releaseDate){
         this.mMovieTitle = movieTitle;
         this.mPosterPath = posterPath;
         this.mPlotSynopsis = plotSynopsis;
@@ -28,7 +30,7 @@ public class Movie {
     public String getPlotSynopsis(){
         return mPlotSynopsis;
     }
-    public String getUserRating(){
+    public double getUserRating(){
         return mUserRating;
     }
     public String getReleaseDate(){
