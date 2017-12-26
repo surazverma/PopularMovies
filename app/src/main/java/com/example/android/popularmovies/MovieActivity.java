@@ -1,23 +1,29 @@
 package com.example.android.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MovieActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<Movie>>{
+public class MovieActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<Movie>>,SharedPreferences.OnSharedPreferenceChangeListener{
 
 
     private ProgressBar mLoadingIndicator;
@@ -27,6 +33,7 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
     private RecyclerView moviesRecyclerView;
     private ImageAdapter imageAdapter;
     private TextView mOfflineTextView;
+    private String sortOrder;
 
 
     @Override
@@ -38,6 +45,7 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
         mLoadingIndicator = (ProgressBar) findViewById(R.id.loading_circle);
         mOfflineTextView = (TextView) findViewById(R.id.internet_connection_error_text);
         mOfflineTextView.setVisibility(View.INVISIBLE);
+        setupSharedPreferences();
 
         ConnectivityManager check = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = check.getActiveNetworkInfo();
@@ -62,11 +70,20 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
         loaderManager.initLoader(MOVIE_LOADER_ID,null,this);
     }
 
+    private void setupSharedPreferences(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        loadMoviePreferences(sharedPreferences);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
 
+    public void loadMoviePreferences(SharedPreferences sharedPreferences){
+        sortOrder = sharedPreferences.getString(getString(R.string.pref_sortOrder_key)
+                ,getString(R.string.pref_by_popular_value));
+    }
 
     @Override
     public Loader<ArrayList<Movie>> onCreateLoader(int id, Bundle args) {
-        String sortOrder = "popular";
+
 
         Uri baseUri = Uri.parse(TMDB_BASE_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
@@ -108,5 +125,36 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     public void onLoaderReset(Loader<ArrayList<Movie>> loader) {
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.sorting_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_sorting){
+            Intent intent = new Intent(this, SortingActivity.class);
+            startActivity(intent);
+            return true;
+        }else
+            return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.pref_sortOrder_key))){
+            loadMoviePreferences(sharedPreferences);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 }
