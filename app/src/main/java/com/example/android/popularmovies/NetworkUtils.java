@@ -27,7 +27,7 @@ public class NetworkUtils {
         if (TextUtils.isEmpty(movieJson)){
             return null;
         }
-        //An empty array list where the movies are added
+
         ArrayList<Movie> movies = new ArrayList<>();
 
         try{

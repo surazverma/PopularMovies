@@ -3,6 +3,7 @@ package com.example.android.popularmovies;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -42,6 +43,7 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
         setContentView(R.layout.activity_movie);
 
 
+
         mLoadingIndicator = (ProgressBar) findViewById(R.id.loading_circle);
         mOfflineTextView = (TextView) findViewById(R.id.internet_connection_error_text);
         mOfflineTextView.setVisibility(View.INVISIBLE);
@@ -63,7 +65,11 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
         moviesRecyclerView = (RecyclerView) findViewById(R.id.poster_recycler_view);
         moviesRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),2);
-        moviesRecyclerView.setLayoutManager(layoutManager);
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            layoutManager = new GridLayoutManager(getApplicationContext(),4);
+            moviesRecyclerView.setLayoutManager(layoutManager);
+        }else{
+        moviesRecyclerView.setLayoutManager(layoutManager);}
 
 
         LoaderManager loaderManager = getSupportLoaderManager();
@@ -76,7 +82,7 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
-    public void loadMoviePreferences(SharedPreferences sharedPreferences){
+    private void loadMoviePreferences(SharedPreferences sharedPreferences){
         sortOrder = sharedPreferences.getString(getString(R.string.pref_sortOrder_key)
                 ,getString(R.string.pref_by_popular_value));
     }
@@ -90,6 +96,7 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
         uriBuilder.appendPath(sortOrder);
         uriBuilder.appendQueryParameter("api_key",API_KEY);
         final String finalUrl = uriBuilder.toString();
+
 
         return new AsyncTaskLoader<ArrayList<Movie>>(this) {
             @Override

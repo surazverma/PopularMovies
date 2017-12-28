@@ -1,6 +1,8 @@
 package com.example.android.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +18,10 @@ import java.util.ArrayList;
  */
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder>{
-    private ArrayList<Movie> movies;
-    private Context context;
+    private final ArrayList<Movie> movies;
+    private final Context context;
+    private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/";
+    private final String posterSize = "w500";
 
 
     public ImageAdapter(Context context, ArrayList<Movie> movies)
@@ -29,14 +33,31 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder>{
     public ImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
         View view = LayoutInflater.from(context).inflate(R.layout.movie_list,parent,false);
         return new ViewHolder(view);
+
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int i) {
         Picasso.with(context)
-                .load("https://image.tmdb.org/t/p/w500" +movies.get(i).getPosterPath())
+                .load(IMAGE_BASE_URL+posterSize +movies.get(i).getPosterPath())
                 .into(holder.posterImage);
+        final int adapterPosition = i;
+        holder.posterImage.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Movie currentMovie = movies.get(adapterPosition);
+                Bundle movieInfo = new Bundle();
+                movieInfo.putParcelable("movie",currentMovie);
+                Intent movieDetailsIntent = new Intent(context, MovieDetails.class);
+                movieDetailsIntent.putExtras(movieInfo);
+                (context).startActivity(movieDetailsIntent);
+
+            }
+        });
+
     }
+
 
     @Override
     public int getItemCount() {
@@ -44,7 +65,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder>{
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        ImageView posterImage;
+        final ImageView posterImage;
         public ViewHolder(View view){
             super(view);
             posterImage =  view.findViewById(R.id.movie_poster);
