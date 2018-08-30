@@ -20,6 +20,7 @@ public class MovieDetails extends AppCompatActivity {
     private final String posterSize = "w500";
 
 
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {

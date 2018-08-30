@@ -86,11 +86,10 @@ public class NetworkUtils {
                 inputStream.close();
             }
         }
-
-
-
         return jsonResponse;
     }
+
+
     private static String readFromStream(InputStream inputStream)throws IOException{
         StringBuilder output = new StringBuilder();
         if (inputStream != null){
