@@ -21,11 +21,6 @@ For stage one the data retrieved from the api is:
 *Please provide your own API KEY in order to work with this application.*
 
 ## Screens
-![screen](../master/screenshots/Screenshot_1.png)
-![screen](../master/screenshots/Screenshot_2.png)
-![screen](../master/screenshots/Screenshot_3.png)
-![screen](../master/screenshots/Screenshot_4.png)
-![screen](../master/screenshots/Screenshot_5.png)
 
 
 
