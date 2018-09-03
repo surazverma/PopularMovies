@@ -21,12 +21,11 @@ For stage one the data retrieved from the api is:
 *Please provide your own API KEY in order to work with this application.*
 
 ## Screens
-![screen](../master/screenshots/Screenshot_1.png)
-![screen](../master/screenshots/Screenshot_2.png)
-![screen](../master/screenshots/Screenshot_3.png)
-![screen](../master/screenshots/Screenshot_4.png)
-![screen](../master/screenshots/Screenshot_5.png)
-
+<img src="../master/screenshots/Screenshot_1.png" width="350">
+<img src="../master/screenshots/Screenshot_2.png" width="350">
+<img src="../master/screenshots/Screenshot_3.png" width="350">
+<img src="../master/screenshots/Screenshot_4.png" width="600">
+<img src="../master/screenshots/Screenshot_5.png" width="600">
 
 
 ## Libraries Used
